@@ -156,8 +156,8 @@ for t,i_p in zip(time,pressure):
     
 #    sol.solve()
     solve(F==0, p, bc)
-	p1,p2,p3 = p.split()
-    v_d1 = project(grad(-K1*grad(p1)),FS)
+	p1,p2,p3 = p.split()   
+	v_d1 = project(grad(-K1*grad(p1)),FS)
 	v_d2 = project(grad(-K2*grad(p2)),FS)
 	v_d3 = project(grad(-K3*grad(p3)),FS)
 	solve(F2==0, c1)
@@ -167,7 +167,7 @@ for t,i_p in zip(time,pressure):
     xdmffile_p2.write(p2,t)
     xdmffile_p3.write(p3,t)
 	c_n1.assign(c1)
-    c_n2.assign(c2)
+	c_n2.assign(c2)
 	c_n3.assign(c3)
 	
 xdmffile_p1.close()
