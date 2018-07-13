@@ -19,8 +19,8 @@ set_log_level(WARNING)
 
 import pandas as pd
 
-import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
+#import matplotlib.pyplot as plt
+#get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 # In[15]:
@@ -33,7 +33,7 @@ f = XDMFFile(mesh.mpi_comm(),"pressure_mesh.xdmf")
 f.read(mesh)
 f.close()
 
-plot(mesh)
+#plot(mesh)
 
 
 # In[16]:
@@ -79,10 +79,10 @@ pressure = new_pressure
 # In[20]:
 
 
-plt.plot(time,pressure)
-plt.xlabel('Time')
-plt.ylabel('Pressure')
-plt.title('Initial pressure')
+#plt.plot(time,pressure)
+#plt.xlabel('Time')
+#plt.ylabel('Pressure')
+#plt.title('Initial pressure')
 
 
 # In[21]:
@@ -156,7 +156,7 @@ for t,i_p in zip(time,pressure):
     
 #    sol.solve()
     solve(F==0, p, bc)
-	p1,p2,p3 = p.split()   
+	p1,p2,p3 = p.split()
 	v_d1 = project(grad(-K1*grad(p1)),FS)
 	v_d2 = project(grad(-K2*grad(p2)),FS)
 	v_d3 = project(grad(-K3*grad(p3)),FS)
