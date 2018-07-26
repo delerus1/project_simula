@@ -132,7 +132,7 @@ bcs = [bc]
 
 # Setting initial condition
 c_0 = Expression(('sin(x[0])', 'cos(x[0]*x[1])','exp(x[1])'),degree=1)
-c_n = project(u_0,FS)
+c_n = project(c_0,FS)
 
 for t,i_p in zip(time,pressure):
     
