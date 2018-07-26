@@ -61,7 +61,7 @@ pressure = np.array(df['pressure']) # mmHg, 0.133322368 mmHg = 1 Kpa
 pressure = pressure * 0.133322368 # KPa
 
 #Interpolation of time and pressure
-num_time_steps = 100
+num_time_steps = 101
 new_time = np.linspace(0,1,num_time_steps)
 func_interpol_p = interp1d(time,pressure)
 new_pressure = func_interpol_p(new_time)
@@ -84,7 +84,9 @@ q1,q2,q3 = TestFunctions(FS)
 v1, v2, v3 = TestFunctions(FS)
 
 # Define constants
-diff_o2 = 0.9*10**-9
+#diff_o2 = 0.9*10**-9
+diff_o2 = 10**-5
+
 dt = 0.01
 K1 = Constant(1) #(mm^2)/(kPa*s)
 K2 = Constant(10) #(mm^2)/kPa*s
@@ -132,10 +134,19 @@ bcs = [bc]
 
 # Setting initial condition
 c_0 = Expression(('sin(x[0])', 'cos(x[0]*x[1])','exp(x[1])'),degree=1)
-c_n = project(c_0,FS)
+c_n_ = project(c_0,FS)
+c_n.assign(c_n_)
 
 for t,i_p in zip(time,pressure):
+    if t%0.1 == 0:
+        print('Time run',t)
+    if sum(np.array(c_n.vector())!=0) == 0:
+        print("c_n is zero",t)
+
+    if sum(np.array(c.vector())!=0) == 0:
+        print("c is zero",t)
     
+
     pD.p = i_p #Updating initial pressure
 
     # Solve for pressure
