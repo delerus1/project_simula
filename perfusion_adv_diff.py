@@ -39,9 +39,7 @@ xdmffile_p3 = XDMFFile(mesh.mpi_comm(), 'perfusion_adv_diff_results/p3.xdmf')
 
 ## Files for darcy velocity
 
-xdmffile_v1 = XDMFFile(mesh.mpi_comm(), 'perfusion_adv_diff_results/v1.xdmf')
-xdmffile_v2 = XDMFFile(mesh.mpi_comm(), 'perfusion_adv_diff_results/v2.xdmf')
-xdmffile_v3 = XDMFFile(mesh.mpi_comm(), 'perfusion_adv_diff_results/v3.xdmf')
+xdmffile_v = XDMFFile(mesh.mpi_comm(), 'perfusion_adv_diff_results/v.xdmf')
 
 
 ## Files for concentration
@@ -163,17 +161,15 @@ for t,i_p in zip(time,pressure):
     # Solve for concentration
     solve(F2==0,c)
     c1_, c2_, c3_ = c.split() 
-    # Update previous solution
+    #Update previous solution
     c_n.assign(c)
 
     # Save parameters
     xdmffile_p1.write(p1_,t)
     xdmffile_p2.write(p2_,t)
     xdmffile_p3.write(p3_,t)
-
-    xdmffile_v1.write(v_d1_,t)
-    xdmffile_v2.write(v_d2_,t)
-    xdmffile_v3.write(v_d3_,t)
+    
+    xdmffile_v.write(v_d,t)
 
     xdmffile_c1.write(c1_,t)
     xdmffile_c2.write(c2_,t)
@@ -184,9 +180,7 @@ for t,i_p in zip(time,pressure):
 xdmffile_p1.close()
 xdmffile_p2.close()
 xdmffile_p3.close()
-xdmffile_v1.close()
-xdmffile_v2.close()
-xdmffile_v3.close()
+xdmffile_v.close()
 xdmffile_c1.close()
 xdmffile_c2.close()
 xdmffile_c3.close()
