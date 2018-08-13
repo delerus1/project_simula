@@ -1,4 +1,4 @@
-
+ 
 # coding: utf-8
 
 # Imports
@@ -80,13 +80,13 @@ P = FiniteElement('P',el,2)
 
 element = MixedElement([P,P,P])
 FS = FunctionSpace(mesh,element)
+FSC = FunctionSpace(mesh,element)
 
 # Define test function
 q1,q2,q3 = TestFunctions(FS)
-v1, v2, v3 = TestFunctions(FS)
+v1, v2, v3 = TestFunctions(FSC)
 
 # Define constants
-#diff_o2 = 0.9*10**-9
 diff_o2 = 10**-5
 
 dt = 0.01
@@ -99,6 +99,10 @@ beta23 = Constant(0.05) #1/(kPa*s)
 D = Constant(diff_o2)
 k = Constant(dt)
 
+R_12 = Constant(0.1) # Rate consentration rate
+R_23 = Constant(0.1)  # Rate consentration rate
+
+
 # Define functions 
 
 p = Function(FS) #Pressure
@@ -106,12 +110,15 @@ v_d1 = Function(FS) #Darcy-velocity
 v_d2 = Function(FS) #Darcy-velocity
 v_d3 = Function(FS) #Darcy-velocity
 
-c = Function(FS) #Concentration this timestep
-c_n = Function(FS) #Consentration last timestep
+c = Function(FSC) #Concentration this timestep
+c_n = Function(FSC)
+c_n1, c_n2, c_n3 = split(c_n)
+#c_n1 = Function(FSC) #Consentration last timestep
+#c_n2 = Function(FSC)
+#c_n3 = Function(FSC)
 
 p1, p2, p3 = split(p)
 c1, c2, c3 = split(c)
-c_n1, c_n2, c_n3 = split(c_n)
 
 S3 = - Constant(0.1)*(p3-Constant(3.0)) #Sink term in the third apartment
 
@@ -125,7 +132,8 @@ F = -K1 * dot(grad(p1), grad(q1))*dx + -K2 * dot(grad(p2), grad(q2))*dx + -K3 * 
 ## Advection-diffusion reaction
 F2 = ((c1 - c_n1) / k)*v1*dx + dot(v_d1, grad(c1))*v1*dx - D*dot(grad(c1),grad(v1))*dx + \
       ((c2 - c_n2) / k)*v2*dx + dot(v_d2, grad(c2))*v2*dx - D*dot(grad(c2),grad(v2))*dx + \
-      ((c3 - c_n3) / k)*v3*dx + dot(v_d3, grad(c3))*v3*dx - D*dot(grad(c3),grad(v3))*dx
+      ((c3 - c_n3) / k)*v3*dx + dot(v_d3, grad(c3))*v3*dx -D*dot(grad(c3),grad(v3))*dx + \
+     dot(R_12*c1,v1)*dx - dot(R_12 * c1,v2)*dx + dot(R_23*c2,v2)*dx -dot(R_23*c2,v3)*dx \
 
 # Setting boundry conditions
 markers = MeshFunction("size_t",mesh,"Files/pressure_markers.xml")
@@ -135,19 +143,14 @@ bc = DirichletBC(FS.sub(0),pD,markers,1)
 bcs = [bc]
 
 # Setting initial condition
-c_0 = Expression(('abs(sin(x[0]))',0,0),degree=1)
-c_n_ = project(c_0,FS)
-c_n.assign(c_n_)
+c_0 = 1.0
+#c_n1 = Function(FSC)
+initc = DirichletBC(FSC.sub(0),c_0,markers,1)
+initc.apply(c_n.vector())
 
 for t, i_p in zip(time,pressure):
     if t%0.1 == 0:
-        print('Time run',t)
-    if sum(np.array(c_n.vector())!=0) == 0:
-        print("c_n is zero",t)
-
-    if sum(np.array(c.vector())!=0) == 0:
-        print("c is zero",t)
-    
+        print('Time run',t) 
 
     pD.p = i_p #Updating initial pressure
 
@@ -173,7 +176,7 @@ for t, i_p in zip(time,pressure):
     xdmffile_p1.write(p1_, t)
     xdmffile_p2.write(p2_,t)
     xdmffile_p3.write(p3_,t)
-      
+     
     xdmffile_v1.write(v_d1,t)
     xdmffile_v2.write(v_d2,t)
     xdmffile_v3.write(v_d3,t)
