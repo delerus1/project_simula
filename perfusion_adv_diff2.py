@@ -87,7 +87,7 @@ q1,q2,q3 = TestFunctions(FS)
 v1, v2, v3 = TestFunctions(FSC)
 
 # Define constants
-diff_o2 = 10**-5
+diff_o2 = 10**-3
 
 dt = 0.01
 K1 = Constant(1) #(mm^2)/(kPa*s)
@@ -99,8 +99,8 @@ beta23 = Constant(0.05) #1/(kPa*s)
 D = Constant(diff_o2)
 k = Constant(dt)
 
-R_12 = Constant(0.1) # Rate consentration rate
-R_23 = Constant(0.1)  # Rate consentration rate
+R_12 = Constant(0.01) # Rate consentration rate
+R_23 = Constant(0.01)  # Rate consentration rate
 
 
 # Define functions 
