@@ -63,7 +63,7 @@ pressure = np.array(df['pressure']) # mmHg, 0.133322368 mmHg = 1 Kpa
 pressure = pressure * 0.133322368 # KPa
 
 #Interpolation of time and pressure
-num_time_steps = 101
+num_time_steps = 51
 new_time = np.linspace(0,1,num_time_steps)
 func_interpol_p = interp1d(time,pressure)
 new_pressure = func_interpol_p(new_time)
@@ -100,7 +100,7 @@ v1, v2, v3 = TestFunctions(FSC)
 # Define constants
 diff_o2 = 10**-5
 
-dt = 0.01
+dt = 0.02
 K1 = Constant(1) #(mm^2)/(kPa*s)
 K2 = Constant(10) #(mm^2)/kPa*s
 K3 = Constant(20) #(mm^2)/kPa*s
@@ -110,8 +110,8 @@ beta23 = Constant(0.05) #1/(kPa*s)
 D = Constant(diff_o2)
 k = Constant(dt)
 
-R_12 = Constant(0.1) # Rate consentration rate
-R_23 = Constant(0.1)  # Rate consentration rate
+R_12 = Constant(0.2) # Rate consentration rate
+R_23 = Constant(0.2)  # Rate consentration rate
 
 
 # Define functions 
