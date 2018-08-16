@@ -160,6 +160,7 @@ for t, i_p in zip(time,pressure):
 
     if counter%10 == 0:
         print('Step number:',counter)
+        print(t,i_p)
     counter += 1
     
     pD.p = i_p #Updating initial pressure
