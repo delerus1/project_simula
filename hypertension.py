@@ -96,9 +96,9 @@ v1, v2, v3 = TestFunctions(FSC)
 diff_o2 = 10**-5
 
 dt = 0.02
-K1 = Constant(0.3) #(mm^2)/(kPa*s)
-K2 = Constant(3) #(mm^2)/kPa*s
-K3 = Constant(6) #(mm^2)/kPa*s
+K1 = Constant(1) #(mm^2)/(kPa*s)
+K2 = Constant(10) #(mm^2)/kPa*s
+K3 = Constant(20) #(mm^2)/kPa*s
 beta12 = Constant(0.02) #1/(kPa*s)
 beta23 = Constant(0.05) #1/(kPa*s)
 
@@ -160,7 +160,6 @@ for t, i_p in zip(time,pressure):
 
     if counter%10 == 0:
         print('Step number:',counter)
-        print(t,i_p)
     counter += 1
     
     pD.p = i_p #Updating initial pressure
