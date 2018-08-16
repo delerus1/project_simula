@@ -68,7 +68,7 @@ pressure = new_pressure
 
 
 # Repeating multiple cycles
-n_sim = 1
+n_sim = 4
 
 new_time = []
 for r in np.linspace(0,n_sim-1,n_sim):
@@ -140,7 +140,6 @@ F2 = ((c1 - c_n1) / k)*v1*dx + dot(v_d1, grad(c1))*v1*dx - D*dot(grad(c1),grad(v
      ((c2 - c_n2) / k)*v2*dx + dot(v_d2, grad(c2))*v2*dx - D*dot(grad(c2),grad(v2))*dx + \
      ((c3 - c_n3) / k)*v3*dx + dot(v_d3, grad(c3))*v3*dx -D*dot(grad(c3),grad(v3))*dx + \
      R_12*c1*v1*dx - R_12*c1*v2*dx + R_23*c2*v2*dx - R_23*c2*v3*dx
-#dot(R_12*c_n1,v1)*dx - dot(R_12 * c_n1,v2)*dx + dot(R_23*c_n2,v2)*dx - dot(R_23*c_n2,v3)*dx \
 
 # Setting boundry conditions
 markers = MeshFunction("size_t",mesh,"Files/pressure_markers.xml")
